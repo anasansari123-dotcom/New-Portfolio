@@ -1,0 +1,1054 @@
+
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Mohd Anas - Portfolio</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.2/css/all.min.css">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Poppins', sans-serif;
+        }
+
+        body {
+            background: #0a0a0a;
+            color: #fff;
+            overflow-x: hidden;
+            line-height: 1.6;
+            position: relative;
+        }
+
+        /* Custom Cursor */
+        .cursor {
+            position: fixed;
+            width: 20px;
+            height: 20px;
+            background: rgba(0, 204, 255, 0.5);
+            border-radius: 50%;
+            pointer-events: none;
+            z-index: 9999;
+            transform: translate(-50%, -50%);
+            transition: width 0.2s ease, height 0.2s ease, background 0.2s ease;
+            box-shadow: 0 0 15px rgba(0, 204, 255, 0.8);
+        }
+
+        .cursor-trail {
+            position: fixed;
+            width: 10px;
+            height: 10px;
+            background: rgba(0, 255, 204, 0.3);
+            border-radius: 50%;
+            pointer-events: none;
+            z-index: 9998;
+            transition: all 0.1s ease;
+            box-shadow: 0 0 10px rgba(0, 255, 204, 0.5);
+        }
+
+        /* Loading Animation */
+        #loading-screen {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: #0a0a0a;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            z-index: 1000;
+            flex-direction: column;
+            gap: 20px;
+        }
+
+        .loader-container {
+            position: relative;
+            width: 150px;
+            height: 150px;
+            perspective: 1000px;
+        }
+
+        .loader-ring {
+            position: absolute;
+            width: 100%;
+            height: 100%;
+            border: 2px solid transparent;
+            border-top: 2px solid #00ccff;
+            border-radius: 50%;
+            animation: spin 1.2s linear infinite, glow 2s ease-in-out infinite;
+        }
+
+        .loader-ring:nth-child(2) {
+            width: 120px;
+            height: 120px;
+            border-top-color: #00ffcc;
+            animation-delay: 0.3s;
+            animation-direction: reverse;
+        }
+
+        .loader-core {
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            width: 30px;
+            height: 30px;
+            background: linear-gradient(45deg, #00ccff, #00ffcc);
+            border-radius: 50%;
+            transform: translate(-50%, -50%) scale(1);
+            animation: pulse 1.5s infinite ease-in-out;
+            box-shadow: 0 0 20px rgba(0, 204, 255, 0.8);
+        }
+
+        .loader-particle {
+            position: absolute;
+            width: 8px;
+            height: 8px;
+            background: #00ccff;
+            border-radius: 50%;
+            animation: orbit 2s infinite ease-in-out, fadePulse 1s infinite;
+        }
+
+        .loader-particle:nth-child(1) { top: 10%; left: 50%; animation-delay: 0s; }
+        .loader-particle:nth-child(2) { top: 50%; right: 10%; animation-delay: 0.5s; }
+        .loader-particle:nth-child(3) { bottom: 10%; left: 50%; animation-delay: 1s; }
+        .loader-particle:nth-child(4) { top: 50%; left: 10%; animation-delay: 1.5s; }
+
+        @keyframes spin {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
+        }
+
+        @keyframes glow {
+            0%, 100% { box-shadow: 0 0 10px rgba(0, 204, 255, 0.5); }
+            50% { box-shadow: 0 0 30px rgba(0, 204, 255, 1); }
+        }
+
+        @keyframes pulse {
+            0%, 100% { transform: translate(-50%, -50%) scale(1); opacity: 0.8; }
+            50% { transform: translate(-50%, -50%) scale(1.3); opacity: 1; }
+        }
+
+        @keyframes orbit {
+            0% { transform: translate(-50%, -50%) rotate(0deg) translateX(40px) rotate(0deg); }
+            100% { transform: translate(-50%, -50%) rotate(360deg) translateX(40px) rotate(-360deg); }
+        }
+
+        @keyframes fadePulse {
+            0%, 100% { opacity: 0.4; }
+            50% { opacity: 1; }
+        }
+
+        .loader-text {
+            font-size: 1.2rem;
+            color: #fff;
+            text-transform: uppercase;
+            letter-spacing: 3px;
+            background: linear-gradient(45deg, #00ccff, #00ffcc);
+            -webkit-background-clip: text;
+            background-clip: text;
+            color: transparent;
+            text-shadow: 0 0 15px rgba(0, 204, 255, 0.7);
+            animation: textGlow 2s infinite;
+        }
+
+        @keyframes textGlow {
+            0%, 100% { text-shadow: 0 0 10px rgba(0, 204, 255, 0.7); }
+            50% { text-shadow: 0 0 25px rgba(0, 204, 255, 1); }
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 20px;
+            position: relative;
+            z-index: 10;
+        }
+
+        /* Navbar Styles */
+        .nav {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            padding: 20px 0;
+            z-index: 100;
+            background: linear-gradient(45deg, rgba(0, 0, 0, 0.9), rgba(0, 204, 255, 0.1));
+            backdrop-filter: blur(10px);
+            box-shadow: 0 4px 20px rgba(0, 204, 255, 0.2);
+            transition: transform 0.5s ease;
+        }
+
+        .nav.hidden {
+            transform: translateY(-100%);
+        }
+
+        .nav-toggle {
+            display: none;
+            font-size: 2rem;
+            color: #00ccff;
+            cursor: pointer;
+            padding: 10px;
+            position: absolute;
+            right: 20px;
+            top: 20px;
+            z-index: 101;
+        }
+
+        .nav-menu {
+            list-style: none;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            gap: 30px;
+            margin: 0;
+            padding: 0;
+            transition: transform 0.5s ease;
+        }
+
+        .nav-menu.active {
+            transform: translateX(0);
+        }
+
+        .nav li {
+            display: inline-block;
+        }
+
+        .nav a {
+            color: #fff;
+            text-decoration: none;
+            font-size: 1.2rem;
+            padding: 10px 20px;
+            display: flex;
+            align-items: center;
+            transition: all 0.3s ease;
+            position: relative;
+            perspective: 1000px;
+        }
+
+        .nav a i {
+            margin-right: 8px;
+            transition: transform 0.5s ease;
+        }
+
+        .nav a::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(45deg, #00ccff, #00ffcc);
+            opacity: 0;
+            transform: scaleY(0);
+            transform-origin: bottom;
+            transition: all 0.4s ease;
+            z-index: -1;
+            border-radius: 10px;
+        }
+
+        .nav a:hover::before {
+            opacity: 0.3;
+            transform: scaleY(1);
+        }
+
+        .nav a:hover {
+            color: #fff;
+            transform: translateZ(30px) rotateX(20deg);
+            text-shadow: 0 0 15px rgba(0, 204, 255, 0.8);
+        }
+
+        .nav a:hover i {
+            transform: scale(1.3) rotate(360deg);
+        }
+
+        header {
+            height: 100vh;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .hero {
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            text-align: center;
+            z-index: 20;
+        }
+
+        .hero h1 {
+            font-size: 5rem;
+            margin-bottom: 20px;
+            background: linear-gradient(45deg, #00ccff, #00ffcc, #00b3ff);
+            -webkit-background-clip: text;
+            background-clip: text;
+            color: transparent;
+            text-shadow: 0 0 20px rgba(0, 204, 255, 0.5);
+            position: relative;
+            animation: textShift 4s infinite;
+        }
+
+        @keyframes textShift {
+            0%, 100% { transform: translateY(0); }
+            50% { transform: translateY(-10px); }
+        }
+
+        .hero h1::after {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(45deg, #00ffcc, #00ccff);
+            -webkit-background-clip: text;
+            background-clip: text;
+            color: transparent;
+            opacity: 0;
+            transform: scale(1);
+            transition: all 0.5s ease;
+        }
+
+        .hero:hover h1::after {
+            opacity: 1;
+            transform: scale(1.05);
+        }
+
+        .hero p {
+            font-size: 1.8rem;
+            color: #00ffcc;
+            text-shadow: 0 0 15px rgba(0, 204, 255, 0.7);
+            letter-spacing: 1px;
+            animation: textPulse 3s infinite;
+        }
+
+        @keyframes textPulse {
+            0%, 100% { opacity: 0.8; }
+            50% { opacity: 1; text-shadow: 0 0 25px rgba(0, 204, 255, 1); }
+        }
+
+        section {
+            padding: 100px 0;
+            position: relative;
+        }
+
+        h2 {
+            font-size: 2.5rem;
+            margin-bottom: 40px;
+            text-align: center;
+            color: #00ccff;
+            text-shadow: 0 0 15px rgba(0, 204, 255, 0.5);
+            position: relative;
+        }
+
+        h2 i {
+            margin-right: 10px;
+            animation: iconSpin 4s infinite linear;
+        }
+
+        @keyframes iconSpin {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
+        }
+
+        .card {
+            background: rgba(255, 255, 255, 0.05);
+            padding: 30px;
+            border-radius: 15px;
+            margin: 20px 0;
+            position: relative;
+            overflow: hidden;
+            backdrop-filter: blur(10px);
+            border: 1px solid rgba(0, 204, 255, 0.2);
+            transition: all 0.3s ease;
+            z-index: 10;
+        }
+
+        .card::before {
+            content: '';
+            position: absolute;
+            top: -50%;
+            left: -50%;
+            width: 200%;
+            height: 200%;
+            background: radial-gradient(circle, rgba(0, 204, 255, 0.3), transparent);
+            opacity: 0;
+            transition: opacity 0.5s ease;
+        }
+
+        .card:hover::before {
+            opacity: 1;
+        }
+
+        .card:hover {
+            transform: translateY(-20px) rotateX(10deg);
+            box-shadow: 0 20px 40px rgba(0, 204, 255, 0.4);
+            background: rgba(255, 255, 255, 0.1);
+        }
+
+        .skills-grid, .project-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 30px;
+        }
+
+        .card i {
+            color: #00ccff;
+            margin-right: 10px;
+            transition: transform 0.5s ease;
+        }
+
+        .card:hover i {
+            transform: scale(1.3) rotate(360deg);
+        }
+
+        .card a {
+            color: #00ccff;
+            text-decoration: none;
+            margin-right: 15px;
+            font-size: 1.2rem;
+            position: relative;
+            transition: all 0.3s ease;
+        }
+
+        .card a::after {
+            content: '';
+            position: absolute;
+            bottom: -5px;
+            left: 0;
+            width: 0;
+            height: 2px;
+            background: #00ffcc;
+            transition: width 0.4s ease;
+        }
+
+        .card a:hover::after {
+            width: 100%;
+        }
+
+        .card a:hover {
+            color: #00ffcc;
+            text-shadow: 0 0 10px rgba(0, 204, 255, 0.8);
+        }
+
+        footer {
+            padding: 40px 0;
+            text-align: center;
+            position: relative;
+            background: linear-gradient(45deg, rgba(0, 0, 0, 0.9), rgba(0, 204, 255, 0.1));
+            backdrop-filter: blur(10px);
+            z-index: 10;
+        }
+
+        footer p {
+            font-size: 1.2rem;
+            color: #00ccff;
+            text-shadow: 0 0 10px rgba(0, 204, 255, 0.5);
+            animation: footerText 3s infinite;
+        }
+
+        @keyframes footerText {
+            0%, 100% { transform: scale(1); }
+            50% { transform: scale(1.05); }
+        }
+
+        footer .social-links a {
+            color: #fff;
+            margin: 0 20px;
+            font-size: 1.8rem;
+            transition: all 0.4s ease;
+            position: relative;
+            display: inline-block;
+        }
+
+        footer .social-links a i {
+            font-size: 2rem;
+            transition: transform 0.5s ease;
+        }
+
+        footer .social-links a:hover {
+            color: #00ffcc;
+            transform: scale(1.5) rotate(360deg);
+            text-shadow: 0 0 15px rgba(0, 204, 255, 0.8);
+        }
+
+        #background-canvas {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            z-index: 5;
+            opacity: 0.9;
+        }
+
+        @media (max-width: 768px) {
+            .hero h1 { font-size: 3rem; }
+            .hero p { font-size: 1.2rem; }
+            .nav-toggle { display: block; }
+            .nav { padding: 10px 0; }
+            .nav-menu {
+                flex-direction: column;
+                position: fixed;
+                top: 0;
+                right: 0;
+                width: 250px;
+                height: 100vh;
+                background: linear-gradient(45deg, rgba(0, 0, 0, 0.9), rgba(0, 204, 255, 0.3));
+                backdrop-filter: blur(10px);
+                transform: translateX(100%);
+                padding-top: 60px;
+                box-shadow: -4px 0 20px rgba(0, 204, 255, 0.2);
+                z-index: 100;
+            }
+            .nav-menu.active { transform: translateX(0); }
+            .nav li { width: 100%; text-align: center; }
+            .nav a { font-size: 1.2rem; padding: 15px 0; display: block; }
+            .nav a:hover::before { transform: scaleY(0.5); }
+            section { padding: 60px 0; }
+            .loader-container { width: 100px; height: 100px; }
+            .loader-core { width: 20px; height: 20px; }
+            .loader-particle { width: 6px; height: 6px; }
+            footer p { font-size: 1rem; }
+            footer .social-links a { font-size: 1.5rem; margin: 0 15px; }
+        }
+    </style>
+</head>
+<body>
+    <!-- Custom Cursor -->
+    <div class="cursor"></div>
+    <div class="cursor-trail"></div>
+
+    <!-- Loading Screen -->
+    <div id="loading-screen">
+        <div class="loader-container">
+            <div class="loader-ring"></div>
+            <div class="loader-ring"></div>
+            <div class="loader-core"></div>
+            <div class="loader-particle"></div>
+            <div class="loader-particle"></div>
+            <div class="loader-particle"></div>
+            <div class="loader-particle"></div>
+        </div>
+        <div class="loader-text">Anas Ansari</div>
+    </div>
+
+    <canvas id="background-canvas"></canvas>
+    <header>
+        <nav class="nav">
+            <div class="nav-toggle">
+                <i class="fas fa-bars"></i>
+            </div>
+            <ul class="nav-menu">
+                <li><a href="#home"><i class="fas fa-home"></i>Home</a></li>
+                <li><a href="#about"><i class="fas fa-user"></i>About</a></li>
+                <li><a href="#skills"><i class="fas fa-code"></i>Skills</a></li>
+                <li><a href="#projects"><i class="fas fa-project-diagram"></i>Projects</a></li>
+                <li><a href="#experience"><i class="fas fa-briefcase"></i>Experience</a></li>
+                <li><a href="#contact"><i class="fas fa-envelope"></i>Contact</a></li>
+                <li><a href="#con"><i class="fas fa-link"></i>Connect</a></li>
+            </ul>
+        </nav>
+        <div class="hero">
+            <h1>MOHD ANAS</h1>
+            <p>Full-Stack Web Developer</p>
+        </div>
+    </header>
+
+    <div class="container">
+        <section id="about">
+            <h2><i class="fas fa-user"></i>About Me</h2>
+            <div class="card">
+                <p><i class="fas fa-info-circle"></i>Aspiring IT professional with a passion for full-stack web development. Skilled in building modern, responsive, and scalable web applications.</p>
+                <p><i class="fas fa-graduation-cap"></i>Bachelor of Computer Application, Muzaffarnagar (May 2023 - Present)</p>
+            </div>
+        </section>
+
+        <section id="skills">
+            <h2><i class="fas fa-code"></i>Skills</h2>
+            <div class="skills-grid">
+                <div class="card"><i class="fab fa-html5"></i>HTML5, CSS3</div>
+                <div class="card"><i class="fab fa-js"></i>JavaScript</div>
+                <div class="card"><i class="fab fa-react"></i>ReactJS</div>
+<div class="card"><i class="fab fa-react"></i> React Native</div>
+<div class="card"><i class="fab fa-python"></i> Python Flask/Django</div>
+                <div class="card"><i class="fas fa-wind"></i>Tailwind CSS</div>
+                <div class="card"><i class="fab fa-bootstrap"></i>Bootstrap</div>
+                <div class="card"><i class="fas fa-code-branch"></i>C, C++</div>
+                <div class="card"><i class="fab fa-git-alt"></i>Git, GitHub</div>
+                <div class="card"><i class="fab fa-node"></i>Node.js</div>
+                <div class="card"><i class="fas fa-server"></i>Express.js</div>
+                <div class="card"><i class="fas fa-database"></i>MySQL, MongoDB</div>
+            </div>
+        </section>
+
+        <section id="projects">
+            <h2><i class="fas fa-project-diagram"></i>Projects</h2>
+            <div class="project-grid">
+                <div class="card" data-project="airbnb">
+                    <h3><i class="fas fa-home"></i>Simple Calculator</h3>
+                    <p><i class="fas fa-tools"></i>HTML5, CSS3, Bootstrap, JavaScript</p>
+                    <p><i class="fas fa-info"></i>A Frontend Project</p>
+                    <a href="https://github.com/anasansari123-dotcom/calculator"><i class="fab fa-github"></i>GitHub</a> |
+                    <a href="http://127.0.0.1:3000/index.html"><i class="fas fa-link"></i>Demo</a>
+                </div>
+                <div class="card" data-project="video">
+                    <h3><i class="fas fa-video"></i>Apna Video Call Web Application</h3>
+                    <p><i class="fas fa-tools"></i>React, Node.js, Express, WebRTC, Socket.io, Cloud Storage</p>
+                    <p><i class="fas fa-info"></i>Real-time video calling application with peer-to-peer connectivity.</p>
+                    <a href="https://tinyurl.com/complete-code"><i class="fab fa-github"></i>GitHub</a> |
+                    <a href="https://tinyurl.com/video-web"><i class="fas fa-link"></i>Demo</a>
+                </div>
+            </div>
+        </section>
+
+        <section id="experience">
+            <h2><i class="fas fa-briefcase"></i>Experience</h2>
+            <div class="card">
+                <h3><i class="fas fa-chalkboard-teacher"></i>Full-Stack Web Developer</h3>
+                <p><i class="fas fa-map-marker-alt"></i>Ganex Pvt Ltd | Mumbai</p>
+                <p><i class="fas fa-calendar-alt"></i>April 2025 - July 2025</p>
+                <ul>
+                    <li><i class="fas fa-check"></i>Taught  React Native , Python (Flask/Django) , Supabase</li>
+                    <li><i class="fas fa-check"></i>Worked on Real Worlds Projects</li>
+                </ul>
+                <h3 style="margin-top: 25px;"><i class="fas fa-chalkboard-teacher"></i>Computer Programming Instructor</h3>
+                <p><i class="fas fa-map-marker-alt"></i>M.S COMPUTER CLASSES | Muzaffarnagar (U.P)</p>
+                <p><i class="fas fa-calendar-alt"></i>August 2023 - Present</p>
+                <ul>
+                    <li><i class="fas fa-check"></i>Taught HTML5, CSS3, JavaScript, C, C++</li>
+                    <li><i class="fas fa-check"></i>Conducted hands-on coding exercises</li>
+                </ul>
+            </div>
+        </section>
+
+        <section id="contact">
+            <h2><i class="fas fa-envelope"></i>Contact</h2>
+            <div class="card">
+                <p><i class="fas fa-phone"></i>Phone:+919389441961</p>
+                <p><i class="fas fa-envelope"></i>Email: anasansari78981@gmail.com</p>
+                <p><i class="fas fa-map-marker-alt"></i>Location: Delhi-NCR</p>
+            </div>
+        </section>
+        <section id="con">
+            <h2><i class="fas fa-envelope"></i>connect</h2>
+            <div class="card">
+                <p>Follow me and check out my work on these platforms:</p>
+                <a href="https://github.com/anasansari123-dotcom"><i class="fab fa-github"></i> GitHub</a>
+                <a href="https://www.linkedin.com/in/anas-ansari-45147b27a/"><i class="fab fa-linkedin"></i> LinkedIn</a>
+            </div>
+        </section>
+
+   
+    </div>
+
+    <footer>
+        <p>© 2025 MOHD ANAS | Built with <i class="fas fa-heart"></i> & Code</p>
+        <div class="social-links">
+            <a href="https://github.com/Alisaqulain"><i class="fab fa-github"></i></a>
+            <a href="https://tinyurl.com/yy44src2"><i class="fab fa-linkedin"></i></a>
+        </div>
+    </footer>
+
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r134/three.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.11.4/gsap.min.js"></script>
+    <script>
+        // Loading Screen Animation
+        gsap.to('#loading-screen', {
+            opacity: 0,
+            duration: 0.5,
+            delay: 0.5,
+            ease: 'power2.in',
+            onComplete: () => document.getElementById('loading-screen').style.display = 'none'
+        });
+
+        gsap.to('.loader-ring', {
+            rotation: 360,
+            duration: 1,
+            repeat: -1,
+            ease: 'linear'
+        });
+
+        gsap.to('.loader-text', {
+            scale: 1.1,
+            duration: 0.5,
+            repeat: -1,
+            yoyo: true,
+            ease: 'sine.inOut'
+        });
+
+        // Mouse Animation
+        const cursor = document.querySelector('.cursor');
+        const trail = document.querySelector('.cursor-trail');
+        let mouseX = 0, mouseY = 0;
+        let trailX = 0, trailY = 0;
+
+        document.addEventListener('mousemove', (e) => {
+            mouseX = e.clientX;
+            mouseY = e.clientY;
+            gsap.to(cursor, { x: mouseX, y: mouseY, duration: 0.1 });
+            gsap.to(trail, {
+                x: trailX = mouseX,
+                y: trailY = mouseY,
+                duration: 0.3,
+                ease: 'power2.out'
+            });
+        });
+
+        document.querySelectorAll('.card, .nav a, footer .social-links a, #connect a').forEach(elem => {
+            elem.addEventListener('mouseenter', () => {
+                gsap.to(cursor, { width: 40, height: 40, background: 'rgba(0, 204, 255, 0.8)', duration: 0.2 });
+                gsap.to(trail, { width: 20, height: 20, duration: 0.2 });
+            });
+            elem.addEventListener('mouseleave', () => {
+                gsap.to(cursor, { width: 20, height: 20, background: 'rgba(0, 204, 255, 0.5)', duration: 0.2 });
+                gsap.to(trail, { width: 10, height: 10, duration: 0.2 });
+            });
+        });
+
+        // Navbar Toggle Functionality
+        const navToggle = document.querySelector('.nav-toggle');
+        const navMenu = document.querySelector('.nav-menu');
+
+        navToggle.addEventListener('click', () => {
+            navMenu.classList.toggle('active');
+            gsap.to('.nav-toggle i', {
+                rotation: navMenu.classList.contains('active') ? 90 : 0,
+                duration: 0.5,
+                ease: 'power2.out'
+            });
+        });
+
+        document.querySelectorAll('.nav-menu a').forEach(link => {
+            link.addEventListener('click', () => {
+                if (window.innerWidth <= 768) {
+                    navMenu.classList.remove('active');
+                    gsap.to('.nav-toggle i', { rotation: 0, duration: 0.5, ease: 'power2.out' });
+                }
+            });
+        });
+
+        // Three.js Background Setup with Enhanced Animations
+        const scene = new THREE.Scene();
+        const camera = new THREE.PerspectiveCamera(75, window.innerWidth / window.innerHeight, 0.1, 1000);
+        const renderer = new THREE.WebGLRenderer({ canvas: document.getElementById('background-canvas'), alpha: true });
+        renderer.setSize(window.innerWidth, window.innerHeight);
+        renderer.setPixelRatio(Math.min(window.devicePixelRatio, 2));
+
+        const ambientLight = new THREE.AmbientLight(0xffffff, 0.5);
+        scene.add(ambientLight);
+        const pointLight = new THREE.PointLight(0x00ccff, 2, 500);
+        pointLight.position.set(0, 0, 50);
+        scene.add(pointLight);
+
+        // Particles
+        const particleGeometry = new THREE.IcosahedronGeometry(0.5, 0);
+        const particleMaterial = new THREE.MeshBasicMaterial({ color: 0x00ccff, wireframe: true });
+        const particles = [];
+        for (let i = 0; i < 700; i++) {
+            const particle = new THREE.Mesh(particleGeometry, particleMaterial);
+            particle.position.set((Math.random() - 0.5) * 500, (Math.random() - 0.5) * 500, (Math.random() - 0.5) * 500);
+            particle.basePosition = particle.position.clone();
+            particle.velocity = new THREE.Vector3((Math.random() - 0.5) * 0.07, (Math.random() - 0.5) * 0.07, (Math.random() - 0.5) * 0.07);
+            particles.push(particle);
+            scene.add(particle);
+        }
+
+        // Spheres with Bounce
+        const sphereGeometry = new THREE.SphereGeometry(3, 32, 32);
+        const sphereMaterial = new THREE.MeshBasicMaterial({ color: 0x00ffcc, wireframe: true });
+        const spheres = [];
+        for (let i = 0; i < 30; i++) {
+            const sphere = new THREE.Mesh(sphereGeometry, sphereMaterial);
+            sphere.position.set((Math.random() - 0.5) * 400, (Math.random() - 0.5) * 400, (Math.random() - 0.5) * 400);
+            sphere.velocity = new THREE.Vector3((Math.random() - 0.5) * 0.05, (Math.random() - 0.5) * 0.05, (Math.random() - 0.5) * 0.05);
+            spheres.push(sphere);
+            scene.add(sphere);
+        }
+
+        // Rotating Rings with Pulsing Effect
+        const ringGeometry = new THREE.TorusGeometry(20, 0.5, 16, 100);
+        const ringMaterial = new THREE.MeshBasicMaterial({ color: 0x00ccff, wireframe: true });
+        const rings = [];
+        for (let i = 0; i < 15; i++) {
+            const ring = new THREE.Mesh(ringGeometry, ringMaterial);
+            ring.position.z = -50 + i * 30;
+            ring.rotation.x = Math.PI / 2 + Math.random();
+            rings.push(ring);
+            scene.add(ring);
+        }
+
+        // Floating Cubes for Projects
+        const projectGeometry = new THREE.DodecahedronGeometry(10, 0);
+        const projectMaterial = new THREE.MeshPhongMaterial({ color: 0x00ffcc, wireframe: true });
+        const projectCubes = [];
+        document.querySelectorAll('.card[data-project]').forEach(card => {
+            const cube = new THREE.Mesh(projectGeometry, projectMaterial);
+            cube.visible = false;
+            cube.userData = { card };
+            projectCubes.push(cube);
+            scene.add(cube);
+        });
+
+        // Animated Lines
+        const lineGeometry = new THREE.BufferGeometry().setFromPoints([
+            new THREE.Vector3(0, -70, 0),
+            new THREE.Vector3(0, 70, 0)
+        ]);
+        const lineMaterial = new THREE.LineBasicMaterial({ color: 0x00ffcc, transparent: true, opacity: 0.5 });
+        const lines = [];
+        for (let i = 0; i < 20; i++) {
+            const line = new THREE.Line(lineGeometry, lineMaterial);
+            line.position.set((Math.random() - 0.5) * 500, (Math.random() - 0.5) * 500, (Math.random() - 0.5) * 500);
+            line.velocity = (Math.random() - 0.5) * 0.09;
+            lines.push(line);
+            scene.add(line);
+        }
+
+        // New: Pulsing Orbs
+        const orbGeometry = new THREE.SphereGeometry(5, 16, 16);
+        const orbMaterial = new THREE.MeshBasicMaterial({ color: 0x00b3ff, wireframe: true });
+        const orbs = [];
+        for (let i = 0; i < 10; i++) {
+            const orb = new THREE.Mesh(orbGeometry, orbMaterial);
+            orb.position.set((Math.random() - 0.5) * 300, (Math.random() - 0.5) * 300, (Math.random() - 0.5) * 300);
+            orb.velocity = new THREE.Vector3((Math.random() - 0.5) * 0.03, (Math.random() - 0.5) * 0.03, (Math.random() - 0.5) * 0.03);
+            orbs.push(orb);
+            scene.add(orb);
+        }
+
+        camera.position.z = 100;
+
+        document.addEventListener('mousemove', (e) => {
+            mouseX = (e.clientX / window.innerWidth) * 2 - 1;
+            mouseY = -(e.clientY / window.innerHeight) * 2 + 1;
+            pointLight.position.x = mouseX * 50;
+            pointLight.position.y = mouseY * 50;
+        });
+
+        function animate() {
+            requestAnimationFrame(animate);
+
+            particles.forEach((particle, i) => {
+                particle.rotation.x += 0.04;
+                particle.rotation.y += 0.04;
+                particle.position.add(particle.velocity);
+                particle.scale.setScalar(0.5 + Math.sin(Date.now() * 0.005 + i) * 0.7);
+                particle.position.lerp(particle.basePosition, 0.05);
+                if (particle.position.distanceTo(new THREE.Vector3(0, 0, 0)) > 250) {
+                    particle.velocity.multiplyScalar(-1);
+                }
+            });
+
+            spheres.forEach(sphere => {
+                sphere.rotation.x += 0.03;
+                sphere.rotation.y += 0.03;
+                sphere.position.add(sphere.velocity);
+                sphere.scale.setScalar(1 + Math.cos(Date.now() * 0.003) * 0.5);
+                if (sphere.position.distanceTo(new THREE.Vector3(0, 0, 0)) > 200) {
+                    sphere.velocity.multiplyScalar(-1);
+                }
+            });
+
+            rings.forEach((ring, i) => {
+                ring.rotation.z += 0.03 * (i + 1) * 0.5;
+                ring.rotation.y += 0.02;
+                ring.scale.setScalar(1 + Math.sin(Date.now() * 0.003 + i) * 0.6);
+            });
+
+            lines.forEach(line => {
+                line.position.z += line.velocity;
+                line.material.opacity = 0.5 + Math.sin(Date.now() * 0.006) * 0.4;
+                line.rotation.x += 0.01;
+                if (line.position.z > 250 || line.position.z < -250) line.velocity *= -1;
+            });
+
+            projectCubes.forEach(cube => {
+                if (cube.visible) {
+                    const rect = cube.userData.card.getBoundingClientRect();
+                    cube.position.x = (rect.left + rect.width / 2 - window.innerWidth / 2) / 20;
+                    cube.position.y = -(rect.top + rect.height / 2 - window.innerHeight / 2) / 20;
+                    cube.position.z = 20;
+                    cube.rotation.x += 0.05;
+                    cube.rotation.y += 0.05;
+                }
+            });
+
+            orbs.forEach((orb, i) => {
+                orb.position.add(orb.velocity);
+                orb.scale.setScalar(1 + Math.sin(Date.now() * 0.004 + i) * 0.8);
+                if (orb.position.distanceTo(new THREE.Vector3(0, 0, 0)) > 150) {
+                    orb.velocity.multiplyScalar(-1);
+                }
+            });
+
+            renderer.render(scene, camera);
+        }
+        animate();
+
+        // Navbar Animations
+        const nav = document.querySelector('.nav');
+        gsap.from('.nav-menu li', {
+            opacity: 0,
+            y: -100,
+            duration: 1.2,
+            stagger: 0.2,
+            ease: 'elastic.out(1, 0.5)',
+            delay: 1
+        });
+
+        let lastScroll = 0;
+        window.addEventListener('scroll', () => {
+            const currentScroll = window.scrollY;
+            if (currentScroll > lastScroll && currentScroll > 100) {
+                gsap.to(nav, { y: '-100%', duration: 0.5, ease: 'power2.in' });
+                nav.classList.add('hidden');
+            } else {
+                gsap.to(nav, { y: '0%', duration: 0.5, ease: 'power2.out' });
+                nav.classList.remove('hidden');
+            }
+            lastScroll = currentScroll;
+        });
+
+        // Header Animations
+        gsap.from('.hero h1', {
+            opacity: 0,
+            y: 200,
+            scale: 0.5,
+            rotationX: 360,
+            duration: 1.8,
+            ease: 'elastic.out(1, 0.5)',
+            delay: 1
+        });
+
+        gsap.from('.hero p', {
+            opacity: 0,
+            y: 50,
+            scale: 0,
+            rotationX: -360,
+            duration: 1.8,
+            ease: 'elastic.out(1, 0.3)',
+            delay: 1.2
+        });
+
+        // Card Animations
+        gsap.utils.toArray('.card').forEach(card => {
+            const cube = projectCubes.find(c => c.userData.card === card);
+            gsap.from(card, {
+                scrollTrigger: { trigger: card, start: 'top 85%' },
+                opacity: 0,
+                y: 150,
+                rotationX: 90,
+                scale: 0.8,
+                duration: 1.8,
+                ease: 'back.out(2)'
+            });
+
+            card.addEventListener('mouseenter', () => {
+                if (cube) {
+                    cube.visible = true;
+                    gsap.to(cube.scale, { x: 2.5, y: 2.5, z: 2.5, duration: 0.7, ease: 'elastic.out(1, 0.3)' });
+                    gsap.to(cube.rotation, { x: Math.PI * 2, y: Math.PI * 2, z: Math.PI * 2, duration: 2 });
+                }
+                gsap.to(card, {
+                    rotationX: 15,
+                    rotationY: 15,
+                    z: 70,
+                    scale: 1.05,
+                    duration: 0.7,
+                    ease: 'power2.out'
+                });
+            });
+
+            card.addEventListener('mouseleave', () => {
+                if (cube) {
+                    gsap.to(cube.scale, { x: 0, y: 0, z: 0, duration: 0.5, ease: 'power2.in', onComplete: () => cube.visible = false });
+                }
+                gsap.to(card, {
+                    rotationX: 0,
+                    rotationY: 0,
+                    z: 0,
+                    scale: 1,
+                    duration: 0.7,
+                    ease: 'power2.out'
+                });
+            });
+        });
+
+        // Footer and Connect Section Hover Animations
+        gsap.utils.toArray('.social-links a, #connect a').forEach(link => {
+            link.addEventListener('mouseenter', () => {
+                gsap.to(link, {
+                    rotationX: 360,
+                    rotationY: 360,
+                    scale: 1.7,
+                    z: 30,
+                    duration: 1,
+                    ease: 'elastic.out(1, 0.3)'
+                });
+            });
+            link.addEventListener('mouseleave', () => {
+                gsap.to(link, {
+                    rotationX: 0,
+                    rotationY: 0,
+                    scale: 1,
+                    z: 0,
+                    duration: 0.7,
+                    ease: 'power2.out'
+                });
+            });
+        });
+
+        gsap.from('footer', {
+            scrollTrigger: { trigger: 'footer', start: 'top bottom' },
+            opacity: 0,
+            y: 150,
+            scale: 0.8,
+            duration: 2,
+            ease: 'elastic.out(1, 0.5)'
+        });
+
+        gsap.from('footer p', {
+            scrollTrigger: { trigger: 'footer', start: 'top bottom' },
+            opacity: 0,
+            y: 50,
+            duration: 1.2,
+            ease: 'power3.out',
+            delay: 0.5
+        });
+
+        gsap.from('footer .social-links a', {
+            scrollTrigger: { trigger: 'footer', start: 'top bottom' },
+            opacity: 0,
+            y: 30,
+            scale: 0,
+            duration: 1.8,
+            stagger: 0.3,
+            ease: 'elastic.out(1, 0.3)',
+            delay: 0.8
+        });
+
+        // Connect Section Animation
+        gsap.from('#connect .card', {
+            scrollTrigger: { trigger: '#connect', start: 'top 85%' },
+            opacity: 0,
+            y: 150,
+            rotationX: 90,
+            scale: 0.8,
+            duration: 1.8,
+            ease: 'back.out(2)'
+        });
+
+        // Responsive Canvas
+        window.addEventListener('resize', () => {
+            camera.aspect = window.innerWidth / window.innerHeight;
+            camera.updateProjectionMatrix();
+            renderer.setSize(window.innerWidth, window.innerHeight);
+        });
+    </script>
+</body>
+</html>
