@@ -1,11 +1,9 @@
-
-
 <!DOCTYPE html>
 <html lang="en">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Mohd Anas - Portfolio</title>
+    <title>MOHD ANAS - Ultimate Portfolio</title>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.2/css/all.min.css">
     <style>
         * {
@@ -13,6 +11,7 @@
             padding: 0;
             box-sizing: border-box;
             font-family: 'Poppins', sans-serif;
+            scroll-behavior: smooth;
         }
 
         body {
@@ -21,72 +20,82 @@
             overflow-x: hidden;
             line-height: 1.6;
             position: relative;
+            transition: background 0.5s ease, color 0.5s ease;
         }
 
-        /* Custom Cursor */
+        body.dark-mode {
+            background: #1a1a1a;
+            color: #e0e0e0;
+        }
+
+        /* Enhanced Custom Cursor */
         .cursor {
             position: fixed;
-            width: 20px;
-            height: 20px;
-            background: rgba(0, 204, 255, 0.5);
+            width: 25px;
+            height: 25px;
+            background: radial-gradient(circle, rgba(0, 204, 255, 0.7), transparent);
             border-radius: 50%;
             pointer-events: none;
             z-index: 9999;
             transform: translate(-50%, -50%);
-            transition: width 0.2s ease, height 0.2s ease, background 0.2s ease;
-            box-shadow: 0 0 15px rgba(0, 204, 255, 0.8);
+            transition: all 0.1s ease;
+            box-shadow: 0 0 20px rgba(0, 204, 255, 0.9), 0 0 40px rgba(0, 255, 204, 0.5);
         }
 
         .cursor-trail {
             position: fixed;
-            width: 10px;
-            height: 10px;
-            background: rgba(0, 255, 204, 0.3);
+            width: 15px;
+            height: 15px;
+            background: radial-gradient(circle, rgba(0, 255, 204, 0.4), transparent);
             border-radius: 50%;
             pointer-events: none;
             z-index: 9998;
-            transition: all 0.1s ease;
-            box-shadow: 0 0 10px rgba(0, 255, 204, 0.5);
+            transition: all 0.2s ease;
+            box-shadow: 0 0 15px rgba(0, 255, 204, 0.6);
         }
 
-        /* Loading Animation */
+        /* Ultimate Loading Screen (2s duration) */
         #loading-screen {
             position: fixed;
             top: 0;
             left: 0;
             width: 100%;
-            height: 100%;
-            background: #0a0a0a;
+            height: 100vh;
+            background: radial-gradient(circle at center, #0a0a0a, #001a33);
             display: flex;
             justify-content: center;
             align-items: center;
-            z-index: 1000;
+            z-index: 10000;
             flex-direction: column;
-            gap: 20px;
+            gap: 25px;
+            overflow: hidden;
         }
 
         .loader-container {
             position: relative;
-            width: 150px;
-            height: 150px;
-            perspective: 1000px;
+            width: 200px;
+            height: 200px;
+            perspective: 1500px;
+            transform-style: preserve-3d;
         }
 
         .loader-ring {
             position: absolute;
             width: 100%;
             height: 100%;
-            border: 2px solid transparent;
-            border-top: 2px solid #00ccff;
+            border: 3px solid transparent;
+            border-top: 3px solid #00ccff;
+            border-bottom: 3px solid #00ffcc;
             border-radius: 50%;
-            animation: spin 1.2s linear infinite, glow 2s ease-in-out infinite;
+            animation: spin 1s ease-in-out infinite, glowRing 1.5s ease-in-out infinite;
         }
 
         .loader-ring:nth-child(2) {
-            width: 120px;
-            height: 120px;
+            width: 160px;
+            height: 160px;
             border-top-color: #00ffcc;
-            animation-delay: 0.3s;
+            border-bottom-color: #00ccff;
+            animation-delay: 0.2s;
             animation-direction: reverse;
         }
 
@@ -94,92 +103,94 @@
             position: absolute;
             top: 50%;
             left: 50%;
-            width: 30px;
-            height: 30px;
-            background: linear-gradient(45deg, #00ccff, #00ffcc);
+            width: 40px;
+            height: 40px;
+            background: linear-gradient(135deg, #00ccff, #00ffcc);
             border-radius: 50%;
-            transform: translate(-50%, -50%) scale(1);
-            animation: pulse 1.5s infinite ease-in-out;
-            box-shadow: 0 0 20px rgba(0, 204, 255, 0.8);
+            transform: translate(-50%, -50%) rotateX(60deg);
+            animation: corePulse 1.2s infinite ease-in-out;
+            box-shadow: 0 0 30px rgba(0, 204, 255, 1), 0 0 60px rgba(0, 255, 204, 0.8);
         }
 
         .loader-particle {
             position: absolute;
-            width: 8px;
-            height: 8px;
+            width: 10px;
+            height: 10px;
             background: #00ccff;
             border-radius: 50%;
-            animation: orbit 2s infinite ease-in-out, fadePulse 1s infinite;
+            box-shadow: 0 0 15px rgba(0, 204, 255, 0.8);
+            animation: orbitParticle 2.5s infinite ease-in-out, fadePulse 1s infinite;
         }
 
-        .loader-particle:nth-child(1) { top: 10%; left: 50%; animation-delay: 0s; }
-        .loader-particle:nth-child(2) { top: 50%; right: 10%; animation-delay: 0.5s; }
-        .loader-particle:nth-child(3) { bottom: 10%; left: 50%; animation-delay: 1s; }
-        .loader-particle:nth-child(4) { top: 50%; left: 10%; animation-delay: 1.5s; }
+        .loader-particle:nth-child(1) { top: 5%; left: 50%; animation-delay: 0s; }
+        .loader-particle:nth-child(2) { top: 50%; right: 5%; animation-delay: 0.6s; }
+        .loader-particle:nth-child(3) { bottom: 5%; left: 50%; animation-delay: 1.2s; }
+        .loader-particle:nth-child(4) { top: 50%; left: 5%; animation-delay: 1.8s; }
 
         @keyframes spin {
             0% { transform: rotate(0deg); }
             100% { transform: rotate(360deg); }
         }
 
-        @keyframes glow {
-            0%, 100% { box-shadow: 0 0 10px rgba(0, 204, 255, 0.5); }
-            50% { box-shadow: 0 0 30px rgba(0, 204, 255, 1); }
+        @keyframes glowRing {
+            0%, 100% { box-shadow: 0 0 15px rgba(0, 204, 255, 0.6); }
+            50% { box-shadow: 0 0 40px rgba(0, 204, 255, 1); }
         }
 
-        @keyframes pulse {
-            0%, 100% { transform: translate(-50%, -50%) scale(1); opacity: 0.8; }
-            50% { transform: translate(-50%, -50%) scale(1.3); opacity: 1; }
+        @keyframes corePulse {
+            0%, 100% { transform: translate(-50%, -50%) rotateX(60deg) scale(1); opacity: 0.7; }
+            50% { transform: translate(-50%, -50%) rotateX(60deg) scale(1.4); opacity: 1; }
         }
 
-        @keyframes orbit {
-            0% { transform: translate(-50%, -50%) rotate(0deg) translateX(40px) rotate(0deg); }
-            100% { transform: translate(-50%, -50%) rotate(360deg) translateX(40px) rotate(-360deg); }
+        @keyframes orbitParticle {
+            0% { transform: translate(-50%, -50%) rotate(0deg) translateX(60px) rotate(0deg); }
+            100% { transform: translate(-50%, -50%) rotate(360deg) translateX(60px) rotate(-360deg); }
         }
 
         @keyframes fadePulse {
-            0%, 100% { opacity: 0.4; }
+            0%, 100% { opacity: 0.5; }
             50% { opacity: 1; }
         }
 
         .loader-text {
-            font-size: 1.2rem;
+            font-size: 1.5rem;
             color: #fff;
             text-transform: uppercase;
-            letter-spacing: 3px;
-            background: linear-gradient(45deg, #00ccff, #00ffcc);
+            letter-spacing: 4px;
+            background: linear-gradient(90deg, #00ccff, #00ffcc, #00ccff);
             -webkit-background-clip: text;
             background-clip: text;
             color: transparent;
-            text-shadow: 0 0 15px rgba(0, 204, 255, 0.7);
-            animation: textGlow 2s infinite;
+            text-shadow: 0 0 20px rgba(0, 204, 255, 0.8);
+            animation: textGlow 1.8s infinite;
         }
 
         @keyframes textGlow {
-            0%, 100% { text-shadow: 0 0 10px rgba(0, 204, 255, 0.7); }
-            50% { text-shadow: 0 0 25px rgba(0, 204, 255, 1); }
+            0%, 100% { text-shadow: 0 0 15px rgba(0, 204, 255, 0.8); transform: scale(1); }
+            50% { text-shadow: 0 0 35px rgba(0, 204, 255, 1); transform: scale(1.05); }
         }
 
+        /* Container */
         .container {
-            max-width: 1200px;
+            max-width: 1400px;
             margin: 0 auto;
-            padding: 20px;
+            padding: 30px;
             position: relative;
             z-index: 10;
         }
 
-        /* Navbar Styles */
+        /* Futuristic Navbar */
         .nav {
             position: fixed;
             top: 0;
             left: 0;
             width: 100%;
-            padding: 20px 0;
-            z-index: 100;
-            background: linear-gradient(45deg, rgba(0, 0, 0, 0.9), rgba(0, 204, 255, 0.1));
-            backdrop-filter: blur(10px);
-            box-shadow: 0 4px 20px rgba(0, 204, 255, 0.2);
-            transition: transform 0.5s ease;
+            padding: 25px 0;
+            z-index: 1000;
+            background: linear-gradient(135deg, rgba(0, 0, 0, 0.95), rgba(0, 204, 255, 0.15));
+            backdrop-filter: blur(15px);
+            box-shadow: 0 5px 25px rgba(0, 204, 255, 0.3);
+            transition: transform 0.6s ease;
         }
 
         .nav.hidden {
@@ -188,25 +199,25 @@
 
         .nav-toggle {
             display: none;
-            font-size: 2rem;
+            font-size: 2.5rem;
             color: #00ccff;
             cursor: pointer;
-            padding: 10px;
+            padding: 15px;
             position: absolute;
-            right: 20px;
-            top: 20px;
-            z-index: 101;
+            right: 25px;
+            top: 15px;
+            z-index: 1001;
+            transition: transform 0.5s ease;
         }
 
         .nav-menu {
             list-style: none;
             display: flex;
             justify-content: center;
-            align-items: center;
-            gap: 30px;
+            gap: 40px;
             margin: 0;
             padding: 0;
-            transition: transform 0.5s ease;
+            transition: transform 0.6s ease;
         }
 
         .nav-menu.active {
@@ -214,24 +225,26 @@
         }
 
         .nav li {
-            display: inline-block;
+            perspective: 1500px;
+            position: relative;
         }
 
         .nav a {
             color: #fff;
             text-decoration: none;
-            font-size: 1.2rem;
-            padding: 10px 20px;
+            font-size: 1.3rem;
+            padding: 12px 25px;
             display: flex;
             align-items: center;
-            transition: all 0.3s ease;
+            transition: all 0.4s ease;
             position: relative;
-            perspective: 1000px;
+            border-radius: 50px;
+            background: rgba(0, 204, 255, 0.1);
         }
 
         .nav a i {
-            margin-right: 8px;
-            transition: transform 0.5s ease;
+            margin-right: 10px;
+            transition: transform 0.6s ease;
         }
 
         .nav a::before {
@@ -241,113 +254,182 @@
             left: 0;
             width: 100%;
             height: 100%;
-            background: linear-gradient(45deg, #00ccff, #00ffcc);
+            background: linear-gradient(135deg, #00ccff, #00ffcc);
             opacity: 0;
-            transform: scaleY(0);
-            transform-origin: bottom;
-            transition: all 0.4s ease;
+            transform: scaleX(0);
+            transform-origin: left;
+            transition: all 0.5s ease;
             z-index: -1;
-            border-radius: 10px;
+            border-radius: 50px;
         }
 
         .nav a:hover::before {
-            opacity: 0.3;
-            transform: scaleY(1);
+            opacity: 0.5;
+            transform: scaleX(1);
         }
 
         .nav a:hover {
             color: #fff;
-            transform: translateZ(30px) rotateX(20deg);
-            text-shadow: 0 0 15px rgba(0, 204, 255, 0.8);
+            transform: translateZ(50px) rotateY(20deg);
+            text-shadow: 0 0 20px rgba(0, 204, 255, 1);
+            box-shadow: 0 0 30px rgba(0, 204, 255, 0.5);
         }
 
         .nav a:hover i {
-            transform: scale(1.3) rotate(360deg);
+            transform: scale(1.5) rotate(360deg);
         }
 
+        /* Tooltip */
+        .nav li::after {
+            content: attr(data-tooltip);
+            position: absolute;
+            top: 100%;
+            left: 50%;
+            transform: translateX(-50%) translateY(10px);
+            background: rgba(0, 204, 255, 0.9);
+            color: #fff;
+            padding: 5px 10px;
+            border-radius: 5px;
+            font-size: 0.9rem;
+            white-space: nowrap;
+            opacity: 0;
+            visibility: hidden;
+            transition: all 0.3s ease;
+            z-index: 1002;
+        }
+
+        .nav li:hover::after {
+            opacity: 1;
+            visibility: visible;
+            transform: translateX(-50%) translateY(5px);
+        }
+
+        /* Dark Mode Toggle */
+        #dark-mode-toggle {
+            position: fixed;
+            top: 20px;
+            right: 80px;
+            font-size: 1.5rem;
+            color: #00ccff;
+            cursor: pointer;
+            z-index: 1001;
+            transition: transform 0.5s ease;
+        }
+
+        #dark-mode-toggle:hover {
+            transform: scale(1.2) rotate(360deg);
+        }
+
+        /* Header */
         header {
             height: 100vh;
             position: relative;
             overflow: hidden;
+            background: radial-gradient(circle at center, rgba(0, 20, 40, 0.8), #0a0a0a);
         }
 
         .hero {
             position: absolute;
             top: 50%;
             left: 50%;
-            transform: translate(-50%, -50%);
+            transform: translate(-50%, -50%) rotateX(0deg);
             text-align: center;
             z-index: 20;
+            perspective: 2000px;
+            transition: transform 0.3s ease;
+        }
+
+        .hero:hover {
+            transform: translate(-50%, -50%) rotateX(10deg) rotateY(10deg);
         }
 
         .hero h1 {
-            font-size: 5rem;
-            margin-bottom: 20px;
-            background: linear-gradient(45deg, #00ccff, #00ffcc, #00b3ff);
+            font-size: 6rem;
+            margin-bottom: 25px;
+            background: linear-gradient(135deg, #00ccff, #00ffcc, #00b3ff);
             -webkit-background-clip: text;
             background-clip: text;
             color: transparent;
-            text-shadow: 0 0 20px rgba(0, 204, 255, 0.5);
-            position: relative;
-            animation: textShift 4s infinite;
+            text-shadow: 0 0 25px rgba(0, 204, 255, 0.7);
+            animation: textShift 3s infinite ease-in-out;
         }
 
         @keyframes textShift {
-            0%, 100% { transform: translateY(0); }
-            50% { transform: translateY(-10px); }
+            0%, 100% { transform: translateY(0) rotateX(0deg); }
+            50% { transform: translateY(-15px) rotateX(10deg); }
         }
 
         .hero h1::after {
+            content: 'MOHD ANAS';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(135deg, #00ffcc, #00ccff);
+            -webkit-background-clip: text;
+            background-clip: text;
+            color: transparent;
+            opacity: 0;
+            transform: scale(1) rotateX(0deg);
+            transition: all 0.6s ease;
+        }
+
+        .hero:hover h1::after {
+            opacity: 1;
+            transform: scale(1.1) rotateX(15deg);
+        }
+
+        .hero p {
+            font-size: 2rem;
+            color: #00ffcc;
+            text-shadow: 0 0 20px rgba(0, 204, 255, 0.8);
+            letter-spacing: 2px;
+            animation: textPulse 2.5s infinite;
+        }
+
+        @keyframes textPulse {
+            0%, 100% { opacity: 0.7; transform: scale(1); }
+            50% { opacity: 1; transform: scale(1.05); text-shadow: 0 0 30px rgba(0, 204, 255, 1); }
+        }
+
+        /* Sections with Parallax Effect */
+        section {
+            padding: 120px 0;
+            position: relative;
+            perspective: 2000px;
+            background-attachment: fixed;
+            background-size: cover;
+            background-position: center;
+        }
+
+        section::before {
             content: '';
             position: absolute;
             top: 0;
             left: 0;
             width: 100%;
             height: 100%;
-            background: linear-gradient(45deg, #00ffcc, #00ccff);
-            -webkit-background-clip: text;
-            background-clip: text;
-            color: transparent;
-            opacity: 0;
-            transform: scale(1);
-            transition: all 0.5s ease;
-        }
-
-        .hero:hover h1::after {
-            opacity: 1;
-            transform: scale(1.05);
-        }
-
-        .hero p {
-            font-size: 1.8rem;
-            color: #00ffcc;
-            text-shadow: 0 0 15px rgba(0, 204, 255, 0.7);
-            letter-spacing: 1px;
-            animation: textPulse 3s infinite;
-        }
-
-        @keyframes textPulse {
-            0%, 100% { opacity: 0.8; }
-            50% { opacity: 1; text-shadow: 0 0 25px rgba(0, 204, 255, 1); }
-        }
-
-        section {
-            padding: 100px 0;
-            position: relative;
+            background: radial-gradient(circle, rgba(0, 204, 255, 0.1), transparent);
+            z-index: -1;
+            transform: translateZ(-200px);
         }
 
         h2 {
-            font-size: 2.5rem;
-            margin-bottom: 40px;
+            font-size: 3rem;
+            margin-bottom: 50px;
             text-align: center;
             color: #00ccff;
-            text-shadow: 0 0 15px rgba(0, 204, 255, 0.5);
+            text-shadow: 0 0 20px rgba(0, 204, 255, 0.6);
             position: relative;
+            opacity: 0;
+            transform: translateY(50px);
+            transition: opacity 0.8s ease, transform 0.8s ease;
         }
 
         h2 i {
-            margin-right: 10px;
-            animation: iconSpin 4s infinite linear;
+            margin-right: 15px;
+            animation: iconSpin 3s infinite linear;
         }
 
         @keyframes iconSpin {
@@ -355,29 +437,35 @@
             100% { transform: rotate(360deg); }
         }
 
+        h2.visible {
+            opacity: 1;
+            transform: translateY(0);
+        }
+
+        /* Enhanced Cards with Hover Zoom and Glow */
         .card {
-            background: rgba(255, 255, 255, 0.05);
-            padding: 30px;
-            border-radius: 15px;
-            margin: 20px 0;
+            background: rgba(255, 255, 255, 0.03);
+            padding: 40px;
+            border-radius: 20px;
+            margin: 25px 0;
             position: relative;
             overflow: hidden;
-            backdrop-filter: blur(10px);
-            border: 1px solid rgba(0, 204, 255, 0.2);
-            transition: all 0.3s ease;
-            z-index: 10;
+            backdrop-filter: blur(12px);
+            border: 2px solid rgba(0, 204, 255, 0.25);
+            transition: all 0.5s ease;
+            transform-style : preserve-3d;
         }
 
         .card::before {
             content: '';
             position: absolute;
-            top: -50%;
-            left: -50%;
-            width: 200%;
-            height: 200%;
-            background: radial-gradient(circle, rgba(0, 204, 255, 0.3), transparent);
+            top: -75%;
+            left: -75%;
+            width: 250%;
+            height: 250%;
+            background: radial-gradient(circle, rgba(0, 204, 255, 0.4), transparent);
             opacity: 0;
-            transition: opacity 0.5s ease;
+            transition: opacity 0.6s ease;
         }
 
         .card:hover::before {
@@ -385,45 +473,45 @@
         }
 
         .card:hover {
-            transform: translateY(-20px) rotateX(10deg);
-            box-shadow: 0 20px 40px rgba(0, 204, 255, 0.4);
-            background: rgba(255, 255, 255, 0.1);
+            transform: translateZ(100px) rotateX(15deg) rotateY(15deg) scale(1.05);
+            box-shadow: 0 25px 50px rgba(0, 204, 255, 0.5), 0 0 20px rgba(0, 255, 204, 0.7);
+            background: rgba(255, 255, 255, 0.08);
         }
 
         .skills-grid, .project-grid {
             display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
-            gap: 30px;
+            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+            gap: 40px;
         }
 
         .card i {
             color: #00ccff;
-            margin-right: 10px;
-            transition: transform 0.5s ease;
+            margin-right: 12px;
+            transition: transform 0.6s ease;
         }
 
         .card:hover i {
-            transform: scale(1.3) rotate(360deg);
+            transform: scale(1.5) rotate(360deg);
         }
 
         .card a {
             color: #00ccff;
             text-decoration: none;
-            margin-right: 15px;
-            font-size: 1.2rem;
+            margin-right: 20px;
+            font-size: 1.3rem;
             position: relative;
-            transition: all 0.3s ease;
+            transition: all 0.4s ease;
         }
 
         .card a::after {
             content: '';
             position: absolute;
-            bottom: -5px;
+            bottom: -6px;
             left: 0;
             width: 0;
-            height: 2px;
+            height: 3px;
             background: #00ffcc;
-            transition: width 0.4s ease;
+            transition: width 0.5s ease;
         }
 
         .card a:hover::after {
@@ -432,50 +520,53 @@
 
         .card a:hover {
             color: #00ffcc;
-            text-shadow: 0 0 10px rgba(0, 204, 255, 0.8);
+            text-shadow: 0 0 15px rgba(0, 204, 255, 1);
+            transform: translateZ(20px);
         }
 
+        /* Footer */
         footer {
-            padding: 40px 0;
+            padding: 50px 0;
             text-align: center;
             position: relative;
-            background: linear-gradient(45deg, rgba(0, 0, 0, 0.9), rgba(0, 204, 255, 0.1));
-            backdrop-filter: blur(10px);
+            background: linear-gradient(135deg, rgba(0, 0, 0, 0.95), rgba(0, 204, 255, 0.15));
+            backdrop-filter: blur(15px);
             z-index: 10;
         }
 
         footer p {
-            font-size: 1.2rem;
+            font-size: 1.3rem;
             color: #00ccff;
-            text-shadow: 0 0 10px rgba(0, 204, 255, 0.5);
-            animation: footerText 3s infinite;
+            text-shadow: 0 0 15px rgba(0, 204, 255, 0.6);
+            animation: footerText 2.5s infinite;
         }
 
         @keyframes footerText {
-            0%, 100% { transform: scale(1); }
-            50% { transform: scale(1.05); }
+            0%, 100% { transform: scale(1) translateZ(0); }
+            50% { transform: scale(1.1) translateZ(20px); }
         }
 
         footer .social-links a {
             color: #fff;
-            margin: 0 20px;
-            font-size: 1.8rem;
-            transition: all 0.4s ease;
+            margin: 0 25px;
+            font-size: 2rem;
+            transition: all 0.5s ease;
             position: relative;
             display: inline-block;
+            perspective: 1000px;
         }
 
         footer .social-links a i {
-            font-size: 2rem;
-            transition: transform 0.5s ease;
+            transition: transform 0.6s ease;
         }
 
         footer .social-links a:hover {
             color: #00ffcc;
-            transform: scale(1.5) rotate(360deg);
-            text-shadow: 0 0 15px rgba(0, 204, 255, 0.8);
+            transform: translateZ(50px) rotateY(360deg);
+            text-shadow: 0 0 20px rgba(0, 204, 255, 1);
         }
 
+        /* Background Canvas */
         #background-canvas {
             position: fixed;
             top: 0;
@@ -483,38 +574,39 @@
             width: 100%;
             height: 100%;
             z-index: 5;
-            opacity: 0.9;
+            opacity: 0.85;
         }
 
+        /* Responsive Design */
         @media (max-width: 768px) {
-            .hero h1 { font-size: 3rem; }
-            .hero p { font-size: 1.2rem; }
+            .hero h1 { font-size: 3.5rem; }
+            .hero p { font-size: 1.4rem; }
             .nav-toggle { display: block; }
-            .nav { padding: 10px 0; }
+            .nav { padding: 15px 0; }
             .nav-menu {
                 flex-direction: column;
                 position: fixed;
                 top: 0;
                 right: 0;
-                width: 250px;
+                width: 300px;
                 height: 100vh;
-                background: linear-gradient(45deg, rgba(0, 0, 0, 0.9), rgba(0, 204, 255, 0.3));
-                backdrop-filter: blur(10px);
+                background: linear-gradient(135deg, rgba(0, 0, 0, 0.95), rgba(0, 204, 255, 0.25));
+                backdrop-filter: blur(15px);
                 transform: translateX(100%);
-                padding-top: 60px;
-                box-shadow: -4px 0 20px rgba(0, 204, 255, 0.2);
-                z-index: 100;
+                padding-top: 80px;
+                box-shadow: -5px 0 25px rgba(0, 204, 255, 0.3);
             }
             .nav-menu.active { transform: translateX(0); }
             .nav li { width: 100%; text-align: center; }
-            .nav a { font-size: 1.2rem; padding: 15px 0; display: block; }
-            .nav a:hover::before { transform: scaleY(0.5); }
-            section { padding: 60px 0; }
-            .loader-container { width: 100px; height: 100px; }
-            .loader-core { width: 20px; height: 20px; }
-            .loader-particle { width: 6px; height: 6px; }
-            footer p { font-size: 1rem; }
-            footer .social-links a { font-size: 1.5rem; margin: 0 15px; }
+            .nav a { font-size: 1.3rem; padding: 20px 0; display: block; }
+            section { padding: 80px 0; }
+            .loader-container { width: 150px; height: 150px; }
+            .loader-core { width: 30px; height: 30px; }
+            .loader-particle { width: 8px; height: 8px; }
+            footer p { font-size: 1.1rem; }
+            footer .social-links a { font-size: 1.8rem; margin: 0 20px; }
+            #dark-mode-toggle { right: 60px; }
+            section::before { transform: translateZ(0); } /* Disable parallax on mobile */
         }
     </style>
 </head>
@@ -523,7 +615,7 @@
     <div class="cursor"></div>
     <div class="cursor-trail"></div>
 
-    <!-- Loading Screen -->
+    <!-- Ultimate Loading Screen (2s) -->
     <div id="loading-screen">
         <div class="loader-container">
             <div class="loader-ring"></div>
@@ -534,7 +626,7 @@
             <div class="loader-particle"></div>
             <div class="loader-particle"></div>
         </div>
-        <div class="loader-text">Anas Ansari</div>
+        <div class="loader-text">MOHD ANAS</div>
     </div>
 
     <canvas id="background-canvas"></canvas>
@@ -544,18 +636,21 @@
                 <i class="fas fa-bars"></i>
             </div>
             <ul class="nav-menu">
-                <li><a href="#home"><i class="fas fa-home"></i>Home</a></li>
-                <li><a href="#about"><i class="fas fa-user"></i>About</a></li>
-                <li><a href="#skills"><i class="fas fa-code"></i>Skills</a></li>
-                <li><a href="#projects"><i class="fas fa-project-diagram"></i>Projects</a></li>
-                <li><a href="#experience"><i class="fas fa-briefcase"></i>Experience</a></li>
-                <li><a href="#contact"><i class="fas fa-envelope"></i>Contact</a></li>
-                <li><a href="#con"><i class="fas fa-link"></i>Connect</a></li>
+                <li data-tooltip="Go to Home"><a href="#home"><i class="fas fa-home"></i>Home</a></li>
+                <li data-tooltip="Learn About Me"><a href="#about"><i class="fas fa-user"></i>About</a></li>
+                <li data-tooltip="View My Skills"><a href="#skills"><i class="fas fa-code"></i>Skills</a></li>
+                <li data-tooltip="Check My Projects"><a href="#projects"><i class="fas fa-project-diagram"></i>Projects</a></li>
+                <li data-tooltip="My Experience"><a href="#experience"><i class="fas fa-briefcase"></i>Experience</a></li>
+                <li data-tooltip="Contact Me"><a href="#contact"><i class="fas fa-envelope"></i>Contact</a></li>
+                <li data-tooltip="Connect with Me"><a href="#connect"><i class="fas fa-link"></i>Connect</a></li>
             </ul>
         </nav>
+        <div id="dark-mode-toggle">
+            <i class="fas fa-moon"></i>
+        </div>
         <div class="hero">
             <h1>MOHD ANAS</h1>
-            <p>Full-Stack Web Developer</p>
+            <p id="typing-text"></p>
         </div>
     </header>
 
@@ -563,8 +658,10 @@
         <section id="about">
             <h2><i class="fas fa-user"></i>About Me</h2>
             <div class="card">
-                <p><i class="fas fa-info-circle"></i>Aspiring IT professional with a passion for full-stack web development. Skilled in building modern, responsive, and scalable web applications.</p>
+                <p><i class="fas fa-info-circle"></i>Aspiring Full-Stack Developer skilled in building responsive and scalable web applications. Strong in problem-solving, debugging, and team collaboration.</p>
                 <p><i class="fas fa-graduation-cap"></i>Bachelor of Computer Application, Muzaffarnagar (May 2023 - Present)</p>
+                <p><i class="fas fa-school"></i>Intermediate (12th Grade), Muzaffarnagar (May 2022)</p>
+                <p><i class="fas fa-link"></i><a href="https://www.linkedin.com/in/anas-ansari-45147b27a">Portfolio (LinkedIn)</a></p>
             </div>
         </section>
 
@@ -573,16 +670,16 @@
             <div class="skills-grid">
                 <div class="card"><i class="fab fa-html5"></i>HTML5, CSS3</div>
                 <div class="card"><i class="fab fa-js"></i>JavaScript</div>
-                <div class="card"><i class="fab fa-react"></i>ReactJS</div>
-<div class="card"><i class="fab fa-react"></i> React Native</div>
-<div class="card"><i class="fab fa-python"></i> Python Flask/Django</div>
-                <div class="card"><i class="fas fa-wind"></i>Tailwind CSS</div>
-                <div class="card"><i class="fab fa-bootstrap"></i>Bootstrap</div>
-                <div class="card"><i class="fas fa-code-branch"></i>C, C++</div>
-                <div class="card"><i class="fab fa-git-alt"></i>Git, GitHub</div>
-                <div class="card"><i class="fab fa-node"></i>Node.js</div>
-                <div class="card"><i class="fas fa-server"></i>Express.js</div>
+                <div class="card"><i class="fab fa-react"></i>ReactJS, NextJS</div>
+                <div class="card"><i class="fab fa-react"></i>React Native</div>
+                <div class="card"><i class="fab fa-python"></i>Python, Flask</div>
+                <div class="card"><i class="fab fa-node"></i>Node.js, Express.js</div>
                 <div class="card"><i class="fas fa-database"></i>MySQL, MongoDB</div>
+                <div class="card"><i class="fab fa-git-alt"></i>Git, GitHub, VSCode</div>
+                <div class="card"><i class="fab fa-bootstrap"></i>Bootstrap, Tailwind CSS</div>
+                <div class="card"><i class="fas fa-code-branch"></i>C, C++</div>
+                <div class="card"><i class="fas fa-server"></i>API Development</div>
+                <div class="card"><i class="fas fa-bug"></i>Debugging & Problem-Solving</div>
             </div>
         </section>
 
@@ -590,18 +687,53 @@
             <h2><i class="fas fa-project-diagram"></i>Projects</h2>
             <div class="project-grid">
                 <div class="card" data-project="airbnb">
-                    <h3><i class="fas fa-home"></i>Simple Calculator</h3>
-                    <p><i class="fas fa-tools"></i>HTML5, CSS3, Bootstrap, JavaScript</p>
-                    <p><i class="fas fa-info"></i>A Frontend Project</p>
-                    <a href="https://github.com/anasansari123-dotcom/calculator"><i class="fab fa-github"></i>GitHub</a> |
-                    <a href="http://127.0.0.1:3000/index.html"><i class="fas fa-link"></i>Demo</a>
+                    <h3><i class="fas fa-home"></i>Airbnb-like Web Application</h3>
+                    <p><i class="fas fa-tools"></i>HTML5, CSS3, Bootstrap, JavaScript, Node.js, Express, Cloud Storage</p>
+                    <p><i class="fas fa-info"></i>Developed a full-stack web application for booking accommodations, similar to Airbnb. Built a backend API with Node.js and Express.js, integrating cloud storage. Responsive UI using Bootstrap.</p>
+                    <a href="https://github.com/Alisaqulain/Airbn-website"><i class="fab fa-github"></i>GitHub</a>
+                    <a href="https://airbn-website-1.onrender.com/listings"><i class="fas fa-link"></i>Demo</a>
                 </div>
                 <div class="card" data-project="video">
                     <h3><i class="fas fa-video"></i>Apna Video Call Web Application</h3>
                     <p><i class="fas fa-tools"></i>React, Node.js, Express, WebRTC, Socket.io, Cloud Storage</p>
-                    <p><i class="fas fa-info"></i>Real-time video calling application with peer-to-peer connectivity.</p>
-                    <a href="https://tinyurl.com/complete-code"><i class="fab fa-github"></i>GitHub</a> |
+                    <p><i class="fas fa-info"></i>Developed a real-time video calling web application with WebRTC for peer-to-peer connectivity and Socket.io for signaling. Responsive front-end with React.</p>
+                    <a href="https://tinyurl.com/complete-code"><i class="fab fa-github"></i>GitHub</a>
                     <a href="https://tinyurl.com/video-web"><i class="fas fa-link"></i>Demo</a>
+                </div>
+                <div class="card" data-project="zerodha">
+                    <h3><i class="fas fa-chart-line"></i>Zerodha Clone</h3>
+                    <p><i class="fas fa-tools"></i>React, Node.js, Express, MongoDB, Bootstrap, Material-UI</p>
+                    <p><i class="fas fa-info"></i>Developed a feature-rich trading platform clone with an interactive UI using React, Bootstrap, and Material-UI. Deployed on Render.</p>
+                    <a href="https://github.com/Alisaqulain/Zerodha-"><i class="fab fa-github"></i>GitHub</a>
+                    <a href="https://zerodha-6.onrender.com/"><i class="fas fa-link"></i>Demo</a>
+                </div>
+                <div class="card" data-project="zerodha">
+                    <h3><i class="fas fa-chart-line"></i>ChatGPT</h3>
+                    <p><i class="fas fa-tools"></i >Built a full-stack AI chatbot powered by OpenAI’s API — from scratch.</p>
+                    <p><i class="fas fa-info"></i>Designed a fast, responsive UI using React + Tailwind and managed backend with Node.js + Express.
+.</p>
+                    <a href="https://github.com/Alisaqulain/aligpt/tree/master"><i class="fab fa-github"></i>GitHub</a>
+                    <a href="https://alisaqulaingpt.onrender.com/"><i class="fas fa-link"></i>Demo</a>
+                </div>
+                <div class="card" data-project="chatapp">
+                    <h3><i class="fas fa-comments"></i>ChatApp – WhatsApp Clone</h3>
+                    <p><i class="fas fa-tools"></i>React Native, Firebase, Expo, React Navigation, AsyncStorage</p>
+                    <p><i class="fas fa-info"></i>Built a fully responsive real-time chat application using React Native and Firebase. Implemented navigation, authentication, and persistent storage with AsyncStorage.</p>
+                    <a href="https://github.com/Alisaqulain/chatApp"><i class="fab fa-github"></i>GitHub</a>
+                </div>
+                <div class="card" data-project="krishikutumb">
+                    <h3><i class="fas fa-leaf"></i>KrishiKutumb Website</h3>
+                    <p><i class="fas fa-tools"></i>HTML5, CSS3</p>
+                    <p><i class="fas fa-info"></i>Built an agriculture-focused static site for a local initiative with a fully responsive layout.</p>
+                    <a href="https://www.krishikutumb.com/"><i class="fas fa-link"></i>Live Site</a>
+                </div>
+                <div class="card" data-project="mztechnicals">
+                    <h3><i class="fas fa-cogs"></i>MZ Technicals Website</h3>
+                    <p><i class="fas fa-tools"></i>HTML5, CSS3</p>
+                    <p><i class="fas fa-info"></i>Custom-built technical company website with a fully responsive layout.</p>
+                    <a href="https://mztechnicals.com/" target="_blank">
+  <i class="fas fa-link"></i>Live Site
+</a>
                 </div>
             </div>
         </section>
@@ -609,19 +741,23 @@
         <section id="experience">
             <h2><i class="fas fa-briefcase"></i>Experience</h2>
             <div class="card">
-                <h3><i class="fas fa-chalkboard-teacher"></i>Full-Stack Web Developer</h3>
-                <p><i class="fas fa-map-marker-alt"></i>Ganex Pvt Ltd | Mumbai</p>
-                <p><i class="fas fa-calendar-alt"></i>April 2025 - July 2025</p>
+                <h3><i class="fas fa-laptop-code"></i>Full-Stack Developer Intern</h3>
+                <p><i class="fas fa-map-marker-alt"></i>Genex Corporate Services | Remote</p>
+                <p><i class="fas fa-calendar-alt"></i>March 2025 - July 2025</p>
                 <ul>
-                    <li><i class="fas fa-check"></i>Taught  React Native , Python (Flask/Django) , Supabase</li>
-                    <li><i class="fas fa-check"></i>Worked on Real Worlds Projects</li>
+                    <li><i class="fas fa-check"></i>Developed GenBore and Vorksinta company websites using React.js as solo projects.</li>
+                    <li><i class="fas fa-check"></i>Contributed to the Internsta platform (similar to Internshala), initially built with Next.js, later migrated to Django.</li>
+                    <li><i class="fas fa-check"></i>Worked collaboratively on front-end, backend, and deployment-ready features.</li>
                 </ul>
-                <h3 style="margin-top: 25px;"><i class="fas fa-chalkboard-teacher"></i>Computer Programming Instructor</h3>
+            </div>
+            <div class="card">
+                <h3><i class="fas fa-chalkboard-teacher"></i>Computer Programming Instructor</h3>
                 <p><i class="fas fa-map-marker-alt"></i>M.S COMPUTER CLASSES | Muzaffarnagar (U.P)</p>
-                <p><i class="fas fa-calendar-alt"></i>August 2023 - Present</p>
+                <p><i class="fas fa-calendar-alt"></i>August 2025 - Present</p>
                 <ul>
-                    <li><i class="fas fa-check"></i>Taught HTML5, CSS3, JavaScript, C, C++</li>
-                    <li><i class="fas fa-check"></i>Conducted hands-on coding exercises</li>
+                    <li><i class="fas fa-check"></i>Instructed students in HTML5, CSS3, JavaScript, C, C++.</li>
+                    <li><i class="fas fa-check"></i>Designed hands-on coding exercises and projects.</li>
+                    <li><i class="fas fa-check"></i>Mentored students in debugging and problem-solving.</li>
                 </ul>
             </div>
         </section>
@@ -629,59 +765,58 @@
         <section id="contact">
             <h2><i class="fas fa-envelope"></i>Contact</h2>
             <div class="card">
-                <p><i class="fas fa-phone"></i>Phone:+919389441961</p>
+                <p><i class="fas fa-phone"></i>Phone: 9389441961</p>
                 <p><i class="fas fa-envelope"></i>Email: anasansari78981@gmail.com</p>
                 <p><i class="fas fa-map-marker-alt"></i>Location: Delhi-NCR</p>
             </div>
         </section>
-        <section id="con">
+
+       <section id="con">
             <h2><i class="fas fa-envelope"></i>connect</h2>
             <div class="card">
                 <p>Follow me and check out my work on these platforms:</p>
                 <a href="https://github.com/anasansari123-dotcom"><i class="fab fa-github"></i> GitHub</a>
-                <a href="https://www.linkedin.com/in/anas-ansari-45147b27a/"><i class="fab fa-linkedin"></i> LinkedIn</a>
+                <a href="https://www.linkedin.com/in/anas-ansari-45147b27a"><i class="fab fa-linkedin"></i> LinkedIn</a>
             </div>
         </section>
-
-   
     </div>
 
     <footer>
-        <p>© 2025 MOHD ANAS | Built with <i class="fas fa-heart"></i> & Code</p>
+        <p>© 2025 MOHD ANAS | Crafted with <i class="fas fa-heart"></i> & Innovation</p>
         <div class="social-links">
-            <a href="https://github.com/Alisaqulain"><i class="fab fa-github"></i></a>
-            <a href="https://tinyurl.com/yy44src2"><i class="fab fa-linkedin"></i></a>
+            <a href="https://github.com/anasansari123-dotcom"><i class="fab fa-github"></i></a>
+            <a href="https://www.linkedin.com/in/anas-ansari-45147b27a"><i class="fab fa-linkedin"></i></a>
         </div>
     </footer>
 
     <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r134/three.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.11.4/gsap.min.js"></script>
     <script>
-        // Loading Screen Animation
+        // Loading Screen Animation (2s)
         gsap.to('#loading-screen', {
             opacity: 0,
-            duration: 0.5,
-            delay: 0.5,
-            ease: 'power2.in',
+            duration: 1,
+            delay: 2,
+            ease: 'power4.in',
             onComplete: () => document.getElementById('loading-screen').style.display = 'none'
         });
 
         gsap.to('.loader-ring', {
             rotation: 360,
-            duration: 1,
+            duration: 1.2,
             repeat: -1,
             ease: 'linear'
         });
 
         gsap.to('.loader-text', {
-            scale: 1.1,
-            duration: 0.5,
+            scale: 1.15,
+            duration: 0.8,
             repeat: -1,
             yoyo: true,
             ease: 'sine.inOut'
         });
 
-        // Mouse Animation
+        // Advanced Cursor Animation
         const cursor = document.querySelector('.cursor');
         const trail = document.querySelector('.cursor-trail');
         let mouseX = 0, mouseY = 0;
@@ -690,27 +825,27 @@
         document.addEventListener('mousemove', (e) => {
             mouseX = e.clientX;
             mouseY = e.clientY;
-            gsap.to(cursor, { x: mouseX, y: mouseY, duration: 0.1 });
+            gsap.to(cursor, { x: mouseX, y: mouseY, duration: 0.05 });
             gsap.to(trail, {
-                x: trailX = mouseX,
-                y: trailY = mouseY,
-                duration: 0.3,
-                ease: 'power2.out'
+                x: trailX += (mouseX - trailX) * 0.2,
+                y: trailY += (mouseY - trailY) * 0.2,
+                duration: 0.4,
+                ease: 'power3.out'
             });
         });
 
         document.querySelectorAll('.card, .nav a, footer .social-links a, #connect a').forEach(elem => {
             elem.addEventListener('mouseenter', () => {
-                gsap.to(cursor, { width: 40, height: 40, background: 'rgba(0, 204, 255, 0.8)', duration: 0.2 });
-                gsap.to(trail, { width: 20, height: 20, duration: 0.2 });
+                gsap.to(cursor, { width: 50, height: 50, background: 'radial-gradient(circle, rgba(0, 204, 255, 0.9), transparent)', duration: 0.3 });
+                gsap.to(trail, { width: 25, height: 25, duration: 0.3 });
             });
             elem.addEventListener('mouseleave', () => {
-                gsap.to(cursor, { width: 20, height: 20, background: 'rgba(0, 204, 255, 0.5)', duration: 0.2 });
-                gsap.to(trail, { width: 10, height: 10, duration: 0.2 });
+                gsap.to(cursor, { width: 25, height: 25, background: 'radial-gradient(circle, rgba(0, 204, 255, 0.7), transparent)', duration: 0.3 });
+                gsap.to(trail, { width: 15, height: 15, duration: 0.3 });
             });
         });
 
-        // Navbar Toggle Functionality
+        // Navbar Toggle
         const navToggle = document.querySelector('.nav-toggle');
         const navMenu = document.querySelector('.nav-menu');
 
@@ -718,8 +853,8 @@
             navMenu.classList.toggle('active');
             gsap.to('.nav-toggle i', {
                 rotation: navMenu.classList.contains('active') ? 90 : 0,
-                duration: 0.5,
-                ease: 'power2.out'
+                duration: 0.6,
+                ease: 'elastic.out(1, 0.5)'
             });
         });
 
@@ -727,63 +862,134 @@
             link.addEventListener('click', () => {
                 if (window.innerWidth <= 768) {
                     navMenu.classList.remove('active');
-                    gsap.to('.nav-toggle i', { rotation: 0, duration: 0.5, ease: 'power2.out' });
+                    gsap.to('.nav-toggle i', { rotation: 0, duration: 0.6, ease: 'elastic.out(1, 0.5)' });
                 }
             });
         });
 
-        // Three.js Background Setup with Enhanced Animations
+        // Typing Effect for Hero Section
+        const typingText = document.getElementById('typing-text');
+        const phrases = ["Full-Stack Developer Extraordinaire", "Web & Mobile App Enthusiast", "Code & Innovation Lover"];
+        let phraseIndex = 0;
+        let charIndex = 0;
+
+        function type() {
+            if (charIndex < phrases[phraseIndex].length) {
+                typingText.textContent += phrases[phraseIndex].charAt(charIndex);
+                charIndex++;
+                setTimeout(type, 100);
+            } else {
+                setTimeout(erase, 2000);
+            }
+        }
+
+        function erase() {
+            if (charIndex > 0) {
+                typingText.textContent = phrases[phraseIndex].substring(0, charIndex - 1);
+                charIndex--;
+                setTimeout(erase, 50);
+            } else {
+                phraseIndex = (phraseIndex + 1) % phrases.length;
+                setTimeout(type, 500);
+            }
+        }
+
+        setTimeout(type, 2500);
+
+        // Dark Mode Toggle
+        const darkModeToggle = document.getElementById('dark-mode-toggle');
+        darkModeToggle.addEventListener('click', () => {
+            document.body.classList.toggle('dark-mode');
+            darkModeToggle.querySelector('i').classList.toggle('fa-moon');
+            darkModeToggle.querySelector('i').classList.toggle('fa-sun');
+        });
+
+        // Scroll-Triggered Section Heading Animation
+        document.querySelectorAll('section h2').forEach(h2 => {
+            gsap.fromTo(h2, 
+                { opacity: 0, y: 50 },
+                {
+                    opacity: 1,
+                    y: 0,
+                    duration: 1,
+                    ease: 'power4.out',
+                    scrollTrigger: {
+                        trigger: h2,
+                        start: 'top 80%',
+                        toggleActions: 'play none none none'
+                    },
+                    onComplete: () => h2.classList.add('visible')
+                }
+            );
+        });
+
+        // Ultimate Three.js Background with Particle Connections
         const scene = new THREE.Scene();
-        const camera = new THREE.PerspectiveCamera(75, window.innerWidth / window.innerHeight, 0.1, 1000);
+        const camera = new THREE.PerspectiveCamera(75, window.innerWidth / window.innerHeight, 0.1, 2000);
         const renderer = new THREE.WebGLRenderer({ canvas: document.getElementById('background-canvas'), alpha: true });
         renderer.setSize(window.innerWidth, window.innerHeight);
         renderer.setPixelRatio(Math.min(window.devicePixelRatio, 2));
 
-        const ambientLight = new THREE.AmbientLight(0xffffff, 0.5);
+        const ambientLight = new THREE.AmbientLight(0xffffff, 0.6);
         scene.add(ambientLight);
-        const pointLight = new THREE.PointLight(0x00ccff, 2, 500);
-        pointLight.position.set(0, 0, 50);
+        const pointLight = new THREE.PointLight(0x00ccff, 3, 1000);
+        pointLight.position.set(0, 0, 100);
         scene.add(pointLight);
 
-        // Particles
-        const particleGeometry = new THREE.IcosahedronGeometry(0.5, 0);
+        const particleGeometry = new THREE.DodecahedronGeometry(0.8, 0);
         const particleMaterial = new THREE.MeshBasicMaterial({ color: 0x00ccff, wireframe: true });
         const particles = [];
-        for (let i = 0; i < 700; i++) {
+        const particleCount = 150;
+        for (let i = 0; i < particleCount; i++) {
             const particle = new THREE.Mesh(particleGeometry, particleMaterial);
-            particle.position.set((Math.random() - 0.5) * 500, (Math.random() - 0.5) * 500, (Math.random() - 0.5) * 500);
+            particle.position.set((Math.random() - 0.5) * 800, (Math.random() - 0.5) * 800, (Math.random() - 0.5) * 800);
             particle.basePosition = particle.position.clone();
-            particle.velocity = new THREE.Vector3((Math.random() - 0.5) * 0.07, (Math.random() - 0.5) * 0.07, (Math.random() - 0.5) * 0.07);
+            particle.velocity = new THREE.Vector3((Math.random() - 0.5) * 0.1, (Math.random() - 0.5) * 0.1, (Math.random() - 0.5) * 0.1);
             particles.push(particle);
             scene.add(particle);
         }
 
-        // Spheres with Bounce
-        const sphereGeometry = new THREE.SphereGeometry(3, 32, 32);
+        const lineMaterial = new THREE.LineBasicMaterial({ color: 0x00ccff, transparent: true, opacity: 0.3 });
+        const connections = [];
+        function updateConnections() {
+            connections.forEach(line => scene.remove(line));
+            connections.length = 0;
+            for (let i = 0; i < particles.length; i++) {
+                for (let j = i + 1; j < particles.length; j++) {
+                    const distance = particles[i].position.distanceTo(particles[j].position);
+                    if (distance < 100) {
+                        const geometry = new THREE.BufferGeometry().setFromPoints([particles[i].position, particles[j].position]);
+                        const line = new THREE.Line(geometry, lineMaterial);
+                        connections.push(line);
+                        scene.add(line);
+                    }
+                }
+            }
+        }
+
+        const sphereGeometry = new THREE.SphereGeometry(5, 32, 32);
         const sphereMaterial = new THREE.MeshBasicMaterial({ color: 0x00ffcc, wireframe: true });
         const spheres = [];
-        for (let i = 0; i < 30; i++) {
+        for (let i = 0; i < 50; i++) {
             const sphere = new THREE.Mesh(sphereGeometry, sphereMaterial);
-            sphere.position.set((Math.random() - 0.5) * 400, (Math.random() - 0.5) * 400, (Math.random() - 0.5) * 400);
-            sphere.velocity = new THREE.Vector3((Math.random() - 0.5) * 0.05, (Math.random() - 0.5) * 0.05, (Math.random() - 0.5) * 0.05);
+            sphere.position.set((Math.random() - 0.5) * 600, (Math.random() - 0.5) * 600, (Math.random() - 0.5) * 600);
+            sphere.velocity = new THREE.Vector3((Math.random() - 0.5) * 0.07, (Math.random() - 0.5) * 0.07, (Math.random() - 0.5) * 0.07);
             spheres.push(sphere);
             scene.add(sphere);
         }
 
-        // Rotating Rings with Pulsing Effect
-        const ringGeometry = new THREE.TorusGeometry(20, 0.5, 16, 100);
+        const ringGeometry = new THREE.TorusGeometry(30, 0.8, 16, 100);
         const ringMaterial = new THREE.MeshBasicMaterial({ color: 0x00ccff, wireframe: true });
         const rings = [];
-        for (let i = 0; i < 15; i++) {
+        for (let i = 0; i < 20; i++) {
             const ring = new THREE.Mesh(ringGeometry, ringMaterial);
-            ring.position.z = -50 + i * 30;
-            ring.rotation.x = Math.PI / 2 + Math.random();
+            ring.position.z = -100 + i * 40;
+            ring.rotation.x = Math.PI / 2 + Math.random() * 0.5;
             rings.push(ring);
             scene.add(ring);
         }
 
-        // Floating Cubes for Projects
-        const projectGeometry = new THREE.DodecahedronGeometry(10, 0);
+        const projectGeometry = new THREE.IcosahedronGeometry(15, 0);
         const projectMaterial = new THREE.MeshPhongMaterial({ color: 0x00ffcc, wireframe: true });
         const projectCubes = [];
         document.querySelectorAll('.card[data-project]').forEach(card => {
@@ -794,96 +1000,96 @@
             scene.add(cube);
         });
 
-        // Animated Lines
         const lineGeometry = new THREE.BufferGeometry().setFromPoints([
-            new THREE.Vector3(0, -70, 0),
-            new THREE.Vector3(0, 70, 0)
+            new THREE.Vector3(0, -100, 0),
+            new THREE.Vector3(0, 100, 0)
         ]);
-        const lineMaterial = new THREE.LineBasicMaterial({ color: 0x00ffcc, transparent: true, opacity: 0.5 });
+        const lineMaterialStatic = new THREE.LineBasicMaterial({ color: 0x00ffcc, transparent: true, opacity: 0.6 });
         const lines = [];
-        for (let i = 0; i < 20; i++) {
-            const line = new THREE.Line(lineGeometry, lineMaterial);
-            line.position.set((Math.random() - 0.5) * 500, (Math.random() - 0.5) * 500, (Math.random() - 0.5) * 500);
-            line.velocity = (Math.random() - 0.5) * 0.09;
+        for (let i = 0; i < 30; i++) {
+            const line = new THREE.Line(lineGeometry, lineMaterialStatic);
+            line.position.set((Math.random() - 0.5) * 800, (Math.random() - 0.5) * 800, (Math.random() - 0.5) * 800);
+            line.velocity = (Math.random() - 0.5) * 0.1;
             lines.push(line);
             scene.add(line);
         }
 
-        // New: Pulsing Orbs
-        const orbGeometry = new THREE.SphereGeometry(5, 16, 16);
+        const orbGeometry = new THREE.SphereGeometry(8, 16, 16);
         const orbMaterial = new THREE.MeshBasicMaterial({ color: 0x00b3ff, wireframe: true });
         const orbs = [];
-        for (let i = 0; i < 10; i++) {
+        for (let i = 0; i < 15; i++) {
             const orb = new THREE.Mesh(orbGeometry, orbMaterial);
-            orb.position.set((Math.random() - 0.5) * 300, (Math.random() - 0.5) * 300, (Math.random() - 0.5) * 300);
-            orb.velocity = new THREE.Vector3((Math.random() - 0.5) * 0.03, (Math.random() - 0.5) * 0.03, (Math.random() - 0.5) * 0.03);
+            orb.position.set((Math.random() - 0.5) * 500, (Math.random() - 0.5) * 500, (Math.random() - 0.5) * 500);
+            orb.velocity = new THREE.Vector3((Math.random() - 0.5) * 0.05, (Math.random() - 0.5) * 0.05, (Math.random() - 0.5) * 0.05);
             orbs.push(orb);
             scene.add(orb);
         }
 
-        camera.position.z = 100;
+        camera.position.z = 150;
 
         document.addEventListener('mousemove', (e) => {
             mouseX = (e.clientX / window.innerWidth) * 2 - 1;
             mouseY = -(e.clientY / window.innerHeight) * 2 + 1;
-            pointLight.position.x = mouseX * 50;
-            pointLight.position.y = mouseY * 50;
+            pointLight.position.x = mouseX * 80;
+            pointLight.position.y = mouseY * 80;
+
+            // 3D Tilt Effect for Hero Section
+            const hero = document.querySelector('.hero');
+            const tiltX = mouseY * 15;
+            const tiltY = -mouseX * 15;
+            gsap.to(hero, { rotationX: tiltX, rotationY: tiltY, duration: 0.5, ease: 'power2.out' });
         });
 
         function animate() {
             requestAnimationFrame(animate);
 
             particles.forEach((particle, i) => {
-                particle.rotation.x += 0.04;
-                particle.rotation.y += 0.04;
+                particle.rotation.x += 0.05;
+                particle.rotation.y += 0.05;
                 particle.position.add(particle.velocity);
-                particle.scale.setScalar(0.5 + Math.sin(Date.now() * 0.005 + i) * 0.7);
-                particle.position.lerp(particle.basePosition, 0.05);
-                if (particle.position.distanceTo(new THREE.Vector3(0, 0, 0)) > 250) {
-                    particle.velocity.multiplyScalar(-1);
-                }
+                particle.scale.setScalar(0.8 + Math.sin(Date.now() * 0.006 + i) * 0.5);
+                particle.position.lerp(particle.basePosition, 0.03);
+                if (particle.position.distanceTo(new THREE.Vector3(0, 0, 0)) > 400) particle.velocity.multiplyScalar(-1);
             });
 
+            updateConnections();
+
             spheres.forEach(sphere => {
-                sphere.rotation.x += 0.03;
-                sphere.rotation.y += 0.03;
+                sphere.rotation.x += 0.04;
+                sphere.rotation.y += 0.04;
                 sphere.position.add(sphere.velocity);
-                sphere.scale.setScalar(1 + Math.cos(Date.now() * 0.003) * 0.5);
-                if (sphere.position.distanceTo(new THREE.Vector3(0, 0, 0)) > 200) {
-                    sphere.velocity.multiplyScalar(-1);
-                }
+                sphere.scale.setScalar(1 + Math.cos(Date.now() * 0.004) * 0.7);
+                if (sphere.position.distanceTo(new THREE.Vector3(0, 0, 0)) > 300) sphere.velocity.multiplyScalar(-1);
             });
 
             rings.forEach((ring, i) => {
-                ring.rotation.z += 0.03 * (i + 1) * 0.5;
-                ring.rotation.y += 0.02;
-                ring.scale.setScalar(1 + Math.sin(Date.now() * 0.003 + i) * 0.6);
+                ring.rotation.z += 0.04 * (i + 1) * 0.6;
+                ring.rotation.y += 0.03;
+                ring.scale.setScalar(1 + Math.sin(Date.now() * 0.004 + i) * 0.8);
             });
 
             lines.forEach(line => {
                 line.position.z += line.velocity;
-                line.material.opacity = 0.5 + Math.sin(Date.now() * 0.006) * 0.4;
-                line.rotation.x += 0.01;
-                if (line.position.z > 250 || line.position.z < -250) line.velocity *= -1;
+                line.material.opacity = 0.6 + Math.sin(Date.now() * 0.007) * 0.5;
+                line.rotation.x += 0.02;
+                if (line.position.z > 400 || line.position.z < -400) line.velocity *= -1;
             });
 
             projectCubes.forEach(cube => {
                 if (cube.visible) {
                     const rect = cube.userData.card.getBoundingClientRect();
-                    cube.position.x = (rect.left + rect.width / 2 - window.innerWidth / 2) / 20;
-                    cube.position.y = -(rect.top + rect.height / 2 - window.innerHeight / 2) / 20;
-                    cube.position.z = 20;
-                    cube.rotation.x += 0.05;
-                    cube.rotation.y += 0.05;
+                    cube.position.x = (rect.left + rect.width / 2 - window.innerWidth / 2) / 15;
+                    cube.position.y = -(rect.top + rect.height / 2 - window.innerHeight / 2) / 15;
+                    cube.position.z = 50;
+                    cube.rotation.x += 0.06;
+                    cube.rotation.y += 0.06;
                 }
             });
 
             orbs.forEach((orb, i) => {
                 orb.position.add(orb.velocity);
-                orb.scale.setScalar(1 + Math.sin(Date.now() * 0.004 + i) * 0.8);
-                if (orb.position.distanceTo(new THREE.Vector3(0, 0, 0)) > 150) {
-                    orb.velocity.multiplyScalar(-1);
-                }
+                orb.scale.setScalar(1 + Math.sin(Date.now() * 0.005 + i) * 1);
+                if (orb.position.distanceTo(new THREE.Vector3(0, 0, 0)) > 250) orb.velocity.multiplyScalar(-1);
             });
 
             renderer.render(scene, camera);
@@ -894,21 +1100,21 @@
         const nav = document.querySelector('.nav');
         gsap.from('.nav-menu li', {
             opacity: 0,
-            y: -100,
-            duration: 1.2,
-            stagger: 0.2,
-            ease: 'elastic.out(1, 0.5)',
-            delay: 1
+            y: -150,
+            duration: 1.5,
+            stagger: 0.25,
+            ease: 'elastic.out(1, 0.6)',
+            delay: 2.5
         });
 
         let lastScroll = 0;
         window.addEventListener('scroll', () => {
             const currentScroll = window.scrollY;
-            if (currentScroll > lastScroll && currentScroll > 100) {
-                gsap.to(nav, { y: '-100%', duration: 0.5, ease: 'power2.in' });
+            if (currentScroll > lastScroll && currentScroll > 150) {
+                gsap.to(nav, { y: '-100%', duration: 0.6, ease: 'power4.in' });
                 nav.classList.add('hidden');
             } else {
-                gsap.to(nav, { y: '0%', duration: 0.5, ease: 'power2.out' });
+                gsap.to(nav, { y: '0%', duration: 0.6, ease: 'power4.out' });
                 nav.classList.remove('hidden');
             }
             lastScroll = currentScroll;
@@ -917,78 +1123,78 @@
         // Header Animations
         gsap.from('.hero h1', {
             opacity: 0,
-            y: 200,
-            scale: 0.5,
-            rotationX: 360,
-            duration: 1.8,
+            y: 300,
+            scale: 0.3,
+            rotationX: 720,
+            duration: 2,
             ease: 'elastic.out(1, 0.5)',
-            delay: 1
+            delay: 2.5
         });
 
         gsap.from('.hero p', {
             opacity: 0,
-            y: 50,
+            y: 100,
             scale: 0,
-            rotationX: -360,
-            duration: 1.8,
+            rotationX: -720,
+            duration: 2,
             ease: 'elastic.out(1, 0.3)',
-            delay: 1.2
+            delay: 3
         });
 
         // Card Animations
         gsap.utils.toArray('.card').forEach(card => {
             const cube = projectCubes.find(c => c.userData.card === card);
             gsap.from(card, {
-                scrollTrigger: { trigger: card, start: 'top 85%' },
+                scrollTrigger: { trigger: card, start: 'top 80%' },
                 opacity: 0,
-                y: 150,
-                rotationX: 90,
-                scale: 0.8,
-                duration: 1.8,
-                ease: 'back.out(2)'
+                y: 200,
+                rotationX: 120,
+                scale: 0.7,
+                duration: 2,
+                ease: 'back.out(2.5)'
             });
 
             card.addEventListener('mouseenter', () => {
                 if (cube) {
                     cube.visible = true;
-                    gsap.to(cube.scale, { x: 2.5, y: 2.5, z: 2.5, duration: 0.7, ease: 'elastic.out(1, 0.3)' });
-                    gsap.to(cube.rotation, { x: Math.PI * 2, y: Math.PI * 2, z: Math.PI * 2, duration: 2 });
+                    gsap.to(cube.scale, { x: 3, y: 3, z: 3, duration: 0.8, ease: 'elastic.out(1, 0.4)' });
+                    gsap.to(cube.rotation, { x: Math.PI * 3, y: Math.PI * 3, z: Math.PI * 3, duration: 2.5 });
                 }
                 gsap.to(card, {
-                    rotationX: 15,
-                    rotationY: 15,
-                    z: 70,
-                    scale: 1.05,
-                    duration: 0.7,
-                    ease: 'power2.out'
+                    rotationX: 20,
+                    rotationY: 20,
+                    z: 100,
+                    scale: 1.1,
+                    duration: 0.8,
+                    ease: 'power4.out'
                 });
             });
 
             card.addEventListener('mouseleave', () => {
                 if (cube) {
-                    gsap.to(cube.scale, { x: 0, y: 0, z: 0, duration: 0.5, ease: 'power2.in', onComplete: () => cube.visible = false });
+                    gsap.to(cube.scale, { x: 0, y: 0, z: 0, duration: 0.6, ease: 'power4.in', onComplete: () => cube.visible = false });
                 }
                 gsap.to(card, {
                     rotationX: 0,
                     rotationY: 0,
                     z: 0,
                     scale: 1,
-                    duration: 0.7,
-                    ease: 'power2.out'
+                    duration: 0.8,
+                    ease: 'power4.out'
                 });
             });
         });
 
-        // Footer and Connect Section Hover Animations
+        // Footer and Connect Animations
         gsap.utils.toArray('.social-links a, #connect a').forEach(link => {
             link.addEventListener('mouseenter', () => {
                 gsap.to(link, {
-                    rotationX: 360,
-                    rotationY: 360,
-                    scale: 1.7,
-                    z: 30,
-                    duration: 1,
-                    ease: 'elastic.out(1, 0.3)'
+                    rotationX: 720,
+                    rotationY: 720,
+                    scale: 2,
+                    z: 50,
+                    duration: 1.2,
+                    ease: 'elastic.out(1, 0.4)'
                 });
             });
             link.addEventListener('mouseleave', () => {
@@ -997,8 +1203,8 @@
                     rotationY: 0,
                     scale: 1,
                     z: 0,
-                    duration: 0.7,
-                    ease: 'power2.out'
+                    duration: 0.8,
+                    ease: 'power4.out'
                 });
             });
         });
@@ -1006,41 +1212,40 @@
         gsap.from('footer', {
             scrollTrigger: { trigger: 'footer', start: 'top bottom' },
             opacity: 0,
-            y: 150,
-            scale: 0.8,
-            duration: 2,
-            ease: 'elastic.out(1, 0.5)'
+            y: 200,
+            scale: 0.7,
+            duration: 2.5,
+            ease: 'elastic.out(1, 0.6)'
         });
 
         gsap.from('footer p', {
             scrollTrigger: { trigger: 'footer', start: 'top bottom' },
             opacity: 0,
-            y: 50,
-            duration: 1.2,
-            ease: 'power3.out',
+            y: 100,
+            duration: 1.5,
+            ease: 'power4.out',
             delay: 0.5
         });
 
         gsap.from('footer .social-links a', {
             scrollTrigger: { trigger: 'footer', start: 'top bottom' },
             opacity: 0,
-            y: 30,
+            y: 50,
             scale: 0,
-            duration: 1.8,
-            stagger: 0.3,
-            ease: 'elastic.out(1, 0.3)',
-            delay: 0.8
+            duration: 2,
+            stagger: 0.4,
+            ease: 'elastic.out(1, 0.4)',
+            delay: 1
         });
 
-        // Connect Section Animation
         gsap.from('#connect .card', {
-            scrollTrigger: { trigger: '#connect', start: 'top 85%' },
+            scrollTrigger: { trigger: '#connect', start: 'top 80%' },
             opacity: 0,
-            y: 150,
-            rotationX: 90,
-            scale: 0.8,
-            duration: 1.8,
-            ease: 'back.out(2)'
+            y: 200,
+            rotationX: 120,
+            scale: 0.7,
+            duration: 2,
+            ease: 'back.out(2.5)'
         });
 
         // Responsive Canvas
